@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StorySlay - English Grade 8 Storytelling</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: {
+                            100: '#FFF0F5',
+                            200: '#FFD1DC',
+                            300: '#FFB6C1',
+                            500: '#FF69B4',
+                        },
+                        pastelYellow: {
+                            100: '#FFFFE0',
+                            200: '#FFF5BA',
+                            300: '#FEF08A',
+                            400: '#FACC15',
+                        },
+                        pastelPurple: {
+                            100: '#F3E8FF',
+                            200: '#E6E6FA',
+                            300: '#D8B4FE',
+                            500: '#A855F7',
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .heading-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD1DC;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFB6C1;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 209, 220, 0.5);
+        }
+        .dark .glass-card {
+            background: rgba(30, 27, 46, 0.88);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+        }
+        .bg-gradient-pastel {
+            background: linear-gradient(135deg, #FFF0F5 0%, #FFF5BA 50%, #F3E8FF 100%);
+        }
+        .dark .bg-gradient-pastel {
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B2E 50%, #2A1B3D 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-pastel min-h-screen text-slate-800 dark:text-slate-100 flex flex-col justify-between">
+
+    <header class="sticky top-0 z-40 w-full glass-card shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pastelPink-300 via-pastelYellow-200 to-pastelPurple-300 flex items-center justify-center shadow-md transform hover:rotate-6 transition-transform">
+                    <i class="fa-solid fa-book-open-reader text-purple-700 text-xl"></i>
+                </div>
+                <div>
+                    <span class="heading-font text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600">
+                        StorySlay✨
+                    </span>
+                    <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 bg-pastelYellow-200 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-full ml-1">
+                        English 8
+                    </span>
+            <!-- Spreadsheet Sync Status & Settings -->
+            <div class="hidden md:flex items-center space-x-2">
+                <button onclick="openApiModal()" class="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-medium border border-emerald-300 dark:border-emerald-800 hover:scale-105 transition-transform">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span id="syncStatusText">Apps Script API Connected</span>
+                    <i class="fa-solid fa-gear text-[10px] ml-1"></i>
+                </button>
+            </div>
+
+            <!-- Controls & Theme Toggle -->
+            <div class="flex items-center space-x-3">
+                <button id="themeToggle" onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-pastelPurple-100 dark:bg-slate-800 text-purple-600 dark:text-yellow-300 hover:scale-105 transition-all flex items-center justify-center border border-purple-200 dark:border-slate-700">
+                    <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl bg-pastelPink-100 dark:bg-slate-800 text-pink-600 dark:text-pink-300 flex items-center justify-center">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden md:flex justify-center space-x-2 pb-2 px-4">
+            <button onclick="switchTab('home')" id="tab-btn-home" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 bg-pastelPink-200 dark:bg-purple-900/60 text-pink-700 dark:text-pink-200">
+                <i class="fa-solid fa-house"></i> Home & Profil
+            </button>
+            <button onclick="switchTab('materi')" id="tab-btn-materi" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-pastelYellow-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Materi Storytelling
+            </button>
+            <button onclick="switchTab('tasks')" id="tab-btn-tasks" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-pastelPurple-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-list-check"></i> Daftar Tugas & Deadline
+            </button>
+            <button onclick="switchTab('vault')" id="tab-btn-vault" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-pastelPink-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-folder-open"></i> Berkas & Arsip
+            </button>
+            <button onclick="switchTab('contact')" id="tab-btn-contact" class="nav-tab px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-pastelYellow-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-comment-dots"></i> Kontak & Catatan
+            </button>
+        </nav>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-purple-100 dark:border-slate-800 px-4 py-3 space-y-2 bg-white/95 dark:bg-slate-900/95">
+            <button onclick="switchTab('home')" class="w-full text-left px-3 py-2 rounded-lg font-semibold flex items-center gap-3 text-pink-600 dark:text-pink-300 bg-pink-50 dark:bg-slate-800">
+                <i class="fa-solid fa-house w-5"></i> Home & Profil
+            </button>
+            <button onclick="switchTab('materi')" class="w-full text-left px-3 py-2 rounded-lg font-semibold flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-wand-magic-sparkles w-5"></i> Materi Storytelling
+            </button>
+            <button onclick="switchTab('tasks')" class="w-full text-left px-3 py-2 rounded-lg font-semibold flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-list-check w-5"></i> Daftar Tugas & Deadline
+            </button>
+            <button onclick="switchTab('vault')" class="w-full text-left px-3 py-2 rounded-lg font-semibold flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-folder-open w-5"></i> Berkas & Arsip
+            </button>
+            <button onclick="switchTab('contact')" class="w-full text-left px-3 py-2 rounded-lg font-semibold flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                <i class="fa-solid fa-comment-dots w-5"></i> Kontak & Catatan
+            </button>
+        </div>
+    </header>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-3 border bg-white dark:bg-slate-800">
+        <div id="toastIcon" class="text-xl"></div>
+        <div id="toastMessage" class="text-sm font-semibold"></div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= TAB 1: HOME & PROFIL ================= -->
+        <section id="tab-home" class="tab-content space-y-8">
+            <!-- Hero Welcome Card -->
+            <div class="relative overflow-hidden rounded-3xl p-6 sm:p-10 bg-gradient-to-r from-pastelPink-200 via-pastelYellow-100 to-pastelPurple-200 dark:from-purple-900/40 dark:via-slate-800 dark:to-pink-900/40 border-2 border-white/60 dark:border-purple-800 shadow-xl">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-block px-3 py-1 bg-white/80 dark:bg-slate-800 text-purple-700 dark:text-purple-300 rounded-full text-xs font-extrabold uppercase tracking-wider shadow-sm">
+                        🔥 Welcome to StorySlay 8th Grade!
+                    </span>
+                    <h1 class="heading-font text-3xl sm:text-5xl font-extrabold leading-tight text-slate-900 dark:text-white">
+                        Bikin <span class="text-pink-500 underline decoration-wavy decoration-yellow-400">Storytelling</span> Bahasa Inggris Lo Nggak Boring! 🚀
+                    </h1>
+                    <p class="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Web app ini didesain khusus buat nemenin kamu menaklukkan materi <span class="font-bold text-purple-600 dark:text-purple-400">English Narrative Text & Storytelling</span> kelas 8. Ringkas, santai, lengkap dengan fitur manajemen tugas berbasis Google Sheets!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchTab('materi')" class="px-5 py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-lg shadow-purple-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i> Gaskeun Pelajari Materi
+                        </button>
+                        <button onclick="switchTab('tasks')" class="px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-sm shadow-md transition-all hover:scale-105 active:scale-95 border border-purple-100 dark:border-slate-700 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i> Cek Tugas Lo
+                        </button>
+                    </div>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-20 dark:opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-comments text-[220px] text-purple-500"></i>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- User Profile Card -->
+                <div class="glass-card rounded-3xl p-6 shadow-lg flex flex-col items-center text-center space-y-4 relative overflow-hidden border-t-8 border-t-pastelPink-300">
+                    <div class="relative">
+                        <img id="userAvatar" src="https://placehold.co/150x150/FFD1DC/6B21A8?text=Aisyah+✨" alt="Profile Picture" class="w-28 h-28 rounded-full border-4 border-white dark:border-slate-800 shadow-md object-cover">
+                        <button onclick="openEditProfileModal()" class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-yellow-300 text-yellow-900 flex items-center justify-center shadow hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-pen text-xs"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <h2 id="userName" class="heading-font text-xl font-bold text-slate-800 dark:text-white">Aisyah Nur Ramadhani</h2>
+                        <span id="userClass" class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 rounded-full text-xs font-bold mt-1">
+                            Kelas 8-A • SMP Nusantara
+                        </span>
+                    </div>
+                    <p id="userBio" class="text-xs text-slate-600 dark:text-slate-300 italic px-2">
+                        "Suka nonton anime, dengerin K-Pop, sama lagi belajar pd ngomong English story tanpa text! 🎧📚"
+                    </p>
+                    <div class="w-full pt-3 border-t border-purple-100 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs font-semibold">
+                        <div class="bg-pastelPink-100 dark:bg-slate-800 p-2 rounded-xl text-pink-700 dark:text-pink-300">
+                            <i class="fa-solid fa-heart mr-1"></i> Hobi: Storytelling
+                        </div>
+                        <div class="bg-pastelYellow-100 dark:bg-slate-800 p-2 rounded-xl text-yellow-800 dark:text-yellow-300">
+                            <i class="fa-solid fa-star mr-1"></i> Target: Grade A
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web App Features Card -->
+                <div class="md:col-span-2 glass-card rounded-3xl p-6 shadow-lg space-y-4">
+                    <h3 class="heading-font text-lg font-bold text-purple-700 dark:text-purple-300 flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye text-pink-500"></i> Tujuan & Fitur Apps Script Ini
+                    </h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Web app ini terintegrasi penuh dengan backend Google Apps Script & Spreadsheet sekolah. Menyajikan materi <strong class="text-slate-800 dark:text-slate-100">Narrative Text</strong> kelas 8 yang krispi dan tidak kaku!
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-2xl bg-pastelPink-100/60 dark:bg-slate-800/60 border border-pastelPink-200 dark:border-slate-700 flex gap-3 items-start">
+                            <div class="w-8 h-8 rounded-xl bg-pink-400 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fa-solid fa-feather"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Materi Gen Z Style</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Paham struktur cerita (Orientation - Complication - Resolution) tanpa pusing.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-pastelYellow-100/60 dark:bg-slate-800/60 border border-pastelYellow-200 dark:border-slate-700 flex gap-3 items-start">
+                            <div class="w-8 h-8 rounded-xl bg-yellow-400 text-yellow-900 flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Anti Deadline Shock</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Countdown timer live bikin kamu selalu aware dengan tenggat waktu.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-pastelPurple-100/60 dark:bg-slate-800/60 border border-pastelPurple-200 dark:border-slate-700 flex gap-3 items-start">
+                            <div class="w-8 h-8 rounded-xl bg-purple-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">File Vault</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Unggah draft teks, video rekaman, atau unduh contoh naskah cerita.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex gap-3 items-start">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fa-solid fa-table"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">Spreadsheet Backend</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Terhubung otomatis via `google.script.run` ke Google Sheets.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: MATERI STORYTELLING (GEN Z STYLE) ================= -->
+        <section id="tab-materi" class="tab-content hidden space-y-8">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+                <!-- Header -->
+                <div class="border-b border-purple-100 dark:border-slate-800 pb-4">
+                    <span class="px-3 py-1 bg-pastelPurple-200 dark:bg-purple-950 text-purple-700 dark:text-purple-300 rounded-full text-xs font-bold">
+                        📖 Chapter: Storytelling & Narrative Text
+                    </span>
+                    <h2 class="heading-font text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2">
+                        How to Slay Storytelling Like a Pro! ✨
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                        Storytelling itu simpelnya lo lagi <span class="font-bold text-pink-500">"spill the tea"</span> versi Bahasa Inggris yang ada alur dan plot serunya. Biar audiens lo nggak *bored to death*, pahami kuncinya di bawah ini!
+                    </p>
+                </div>
+
+                <!-- Narrative Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1: Orientation -->
+                    <div class="p-5 rounded-2xl bg-pastelPink-100 dark:bg-slate-800 border border-pastelPink-200 dark:border-slate-700 space-y-2 hover:scale-[1.02] transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-pink-400 text-white flex items-center justify-center font-bold text-lg shadow-sm">1</div>
+                        <h3 class="heading-font font-bold text-lg text-pink-700 dark:text-pink-300">Orientation</h3>
+                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">"Intro to the Squad & Vibe"</p>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Kenalin siapa tokoh utamanya (<span class="italic">Who</span>), di mana kejadiannya (<span class="italic">Where</span>), dan kapan (<span class="italic">When</span>). Set the mood dari awal!
+                        </p>
+                        <div class="p-2 rounded-lg bg-white/70 dark:bg-slate-900/60 text-[11px] font-mono text-pink-800 dark:text-pink-200">
+                            Ex: "Once upon a time in a peaceful village, lived a chill guy named Malin..."
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Complication -->
+                    <div class="p-5 rounded-2xl bg-pastelYellow-100 dark:bg-slate-800 border border-pastelYellow-200 dark:border-slate-700 space-y-2 hover:scale-[1.02] transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-yellow-900 flex items-center justify-center font-bold text-lg shadow-sm">2</div>
+                        <h3 class="heading-font font-bold text-lg text-yellow-800 dark:text-yellow-300">Complication</h3>
+                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">"The Drama Hits!"</p>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Mulai muncul masalah atau konflik puncak. Ini bagian paling *spicy* yang bikin penonton penasaran!
+                        </p>
+                        <div class="p-2 rounded-lg bg-white/70 dark:bg-slate-900/60 text-[11px] font-mono text-yellow-900 dark:text-yellow-200">
+                            Ex: "Suddenly, Malin pretended he didn't know his mom. Totally toxic behavior!"
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Resolution -->
+                    <div class="p-5 rounded-2xl bg-pastelPurple-100 dark:bg-slate-800 border border-pastelPurple-200 dark:border-slate-700 space-y-2 hover:scale-[1.02] transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">3</div>
+                        <h3 class="heading-font font-bold text-lg text-purple-700 dark:text-purple-300">Resolution</h3>
+                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">"Plot Twist / Solusi"</p>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Bagaimana masalah tersebut diselesaikan. Boleh *happy ending* atau malah *sad ending* (karma berlaku).
+                        </p>
+                        <div class="p-2 rounded-lg bg-white/70 dark:bg-slate-900/60 text-[11px] font-mono text-purple-800 dark:text-purple-200">
+                            Ex: "His mom prayed, storm came, and BOOM! Malin turned into stone."
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Coda / Moral -->
+                    <div class="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-2 hover:scale-[1.02] transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">4</div>
+                        <h3 class="heading-font font-bold text-lg text-emerald-700 dark:text-emerald-300">Coda (Moral)</h3>
+                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">"Pesan Biar Gak Karma"</p>
+                        <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            Pelajaran penting yang bisa diambil audiens. Wajib disampaikan dengan intonasi mantap!
+                        </p>
+                        <div class="p-2 rounded-lg bg-white/70 dark:bg-slate-900/60 text-[11px] font-mono text-emerald-800 dark:text-emerald-200">
+                            Ex: "Moral lesson: Always respect your parents, no matter how successful you are!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cheat Sheet -->
+                <div class="p-6 rounded-2xl bg-gradient-to-r from-pastelPink-100 via-pastelYellow-100 to-pastelPurple-100 dark:from-slate-800 dark:to-slate-800 border border-purple-200 dark:border-slate-700 space-y-4">
+                    <h3 class="heading-font font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb text-yellow-500"></i> Cheat Sheet Trik Bahasa (Language Features)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3 bg-white/80 dark:bg-slate-900/80 rounded-xl shadow-sm">
+                            <span class="font-bold text-pink-600 dark:text-pink-300 block mb-1">1. Simple Past Tense</span>
+                            Gunakan V2! (e.g., <code class="bg-pink-100 dark:bg-slate-800 px-1 rounded">went, walked, said, cried</code>)
+                        </div>
+                        <div class="p-3 bg-white/80 dark:bg-slate-900/80 rounded-xl shadow-sm">
+                            <span class="font-bold text-yellow-600 dark:text-yellow-300 block mb-1">2. Action Verbs</span>
+                            Kata kerja fisik (e.g., <code class="bg-yellow-100 dark:bg-slate-800 px-1 rounded">jumped, screamed, ran</code>)
+                        </div>
+                        <div class="p-3 bg-white/80 dark:bg-slate-900/80 rounded-xl shadow-sm">
+                            <span class="font-bold text-purple-600 dark:text-purple-300 block mb-1">3. Time Connectors</span>
+                            Penyambung alur (e.g., <code class="bg-purple-100 dark:bg-slate-800 px-1 rounded">Suddenly, After that, Finally</code>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: DAFTAR TUGAS & DEADLINE ================= -->
+        <section id="tab-tasks" class="tab-content hidden space-y-6">
+            <!-- Countdown Widget Highlight -->
+            <div class="glass-card rounded-3xl p-6 shadow-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold tracking-wider uppercase">
+                        🚨 Nearest Deadline Reminder
+                    </span>
+                    <h3 id="nextTaskTitle" class="heading-font text-2xl font-bold">
+                        Video Storytelling Practice: Malin Kundang
+                    </h3>
+                    <p class="text-xs text-purple-100">Mata Pelajaran: English Class 8 • Target: Upload MP4/Link Drive</p>
+                </div>
+                
+                <!-- Countdown Display -->
+                <div class="flex items-center space-x-3 text-center bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+                    <div class="px-3 py-1">
+                        <span id="cd-days" class="heading-font text-3xl font-extrabold block">02</span>
+                        <span class="text-[10px] uppercase font-bold text-purple-200">Hari</span>
+                    </div>
+                    <span class="text-2xl font-bold">:</span>
+                    <div class="px-3 py-1">
+                        <span id="cd-hours" class="heading-font text-3xl font-extrabold block">14</span>
+                        <span class="text-[10px] uppercase font-bold text-purple-200">Jam</span>
+                    </div>
+                    <span class="text-2xl font-bold">:</span>
+                    <div class="px-3 py-1">
+                        <span id="cd-mins" class="heading-font text-3xl font-extrabold block">35</span>
+                        <span class="text-[10px] uppercase font-bold text-purple-200">Menit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Controls Header -->
+            <div class="glass-card rounded-3xl p-6 shadow-lg space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="heading-font text-2xl font-bold text-slate-900 dark:text-white">Daftar Tugas Aktif</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Pantau tugas dan langsung update status pengerjaanmu di Spreadsheet.</p>
+                    </div>
+                    <button onclick="openAddTaskModal()" class="px-4 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs shadow-md transition-all hover:scale-105 active:scale-95 flex items-center gap-2 self-start sm:self-auto">
+                        <i class="fa-solid fa-plus"></i> Tambah Tugas Baru
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-purple-100 dark:border-slate-800 text-xs">
+                    <span class="font-bold text-slate-500 mr-2">Filter Status:</span>
+                    <button onclick="filterTasks('all', this)" class="filter-btn active px-3 py-1.5 rounded-lg font-bold bg-purple-600 text-white">Semua</button>
+                    <button onclick="filterTasks('Belum Mulai', this)" class="filter-btn px-3 py-1.5 rounded-lg font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Belum Mulai</button>
+                    <button onclick="filterTasks('Proses', this)" class="filter-btn px-3 py-1.5 rounded-lg font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Proses</button>
+                    <button onclick="filterTasks('Selesai', this)" class="filter-btn px-3 py-1.5 rounded-lg font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Selesai</button>
+                </div>
+
+                <!-- Task List Grid -->
+                <div id="taskListGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <!-- Loaded dynamically from Google Apps Script -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: BERKAS & PENYIMPANAN ================= -->
+        <section id="tab-vault" class="tab-content hidden space-y-6">
+            <div class="glass-card rounded-3xl p-6 shadow-xl space-y-6">
+                <div>
+                    <h2 class="heading-font text-2xl font-bold text-slate-900 dark:text-white">Berkas, Upload & Arsip</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Unduh bahan bacaan cerita atau upload draft tugasmu langsung ke Drive sekolah.</p>
+                </div>
+
+                <!-- Drag and Drop Upload Area -->
+                <div class="p-8 border-2 border-dashed border-purple-300 dark:border-purple-800 rounded-3xl bg-pastelPurple-100/30 dark:bg-slate-800/50 text-center space-y-3 hover:bg-pastelPurple-100/60 transition-colors">
+                    <div class="w-16 h-16 rounded-full bg-pastelPurple-200 dark:bg-purple-900/60 text-purple-600 dark:text-purple-300 mx-auto flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Upload Berkas Tugas / Video Storytelling</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Format didukung: PDF, DOCX, MP4, MP3 (Max 50MB)</p>
+                    </div>
+                    <label class="inline-block px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow cursor-pointer transition-all hover:scale-105">
+                        <i class="fa-solid fa-folder-open mr-1"></i> Pilih Berkas
+                        <input type="file" id="fileInput" onchange="handleFileUpload(event)" class="hidden">
+                    </label>
+                </div>
+
+                <!-- Files List -->
+                <div class="space-y-3">
+                    <h3 class="heading-font font-bold text-base text-slate-800 dark:text-slate-200">Berkas Pembelajaran & Template</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-purple-100 dark:border-slate-700 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>
+                                <div>
+                                    <p class="font-bold text-slate-800 dark:text-slate-200">Modul_Storytelling_Class8.pdf</p>
+                                    <p class="text-[10px] text-slate-400">1.8 MB • Ditambahkan Guru</p>
+                                </div>
+                            </div>
+                            <button onclick="downloadSimulatedFile('Modul_Storytelling_Class8.pdf')" class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-purple-100 dark:border-slate-700 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-lines text-blue-500 text-2xl"></i>
+                                <div>
+                                    <p class="font-bold text-slate-800 dark:text-slate-200">Script_MalinKundang_Template.docx</p>
+                                    <p class="text-[10px] text-slate-400">450 KB • Draft Naskah</p>
+                                </div>
+                            </div>
+                            <button onclick="downloadSimulatedFile('Script_MalinKundang_Template.docx')" class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Archive Table -->
+                <div class="space-y-3 pt-4 border-t border-purple-100 dark:border-slate-800">
+                    <h3 class="heading-font font-bold text-base text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive text-pink-500"></i> Arsip Tugas Semester Sebelumnya
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left text-slate-600 dark:text-slate-300">
+                            <thead class="bg-pastelPink-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200 rounded-lg">
+                                <tr>
+                                    <th class="p-3 rounded-l-xl">Semester</th>
+                                    <th class="p-3">Judul Tugas Arsip</th>
+                                    <th class="p-3">Nilai</th>
+                                    <th class="p-3 rounded-r-xl">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-purple-100 dark:divide-slate-800">
+                                <tr>
+                                    <td class="p-3 font-semibold">Semester 1</td>
+                                    <td class="p-3">Recount Text: My Summer Vacation Speech</td>
+                                    <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-bold">92/100</span></td>
+                                    <td class="p-3"><button onclick="showToast('Membuka arsip Recount Text', 'info')" class="text-purple-600 underline">Lihat</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">Semester 1</td>
+                                    <td class="p-3">Descriptive Text: My Favorite Pet Oral Test</td>
+                                    <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-bold">88/100</span></td>
+                                    <td class="p-3"><button onclick="showToast('Membuka arsip Descriptive Text', 'info')" class="text-purple-600 underline">Lihat</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: KONTAK & CATATAN ================= -->
+        <section id="tab-contact" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Teacher Info Card -->
+                <div class="glass-card rounded-3xl p-6 shadow-xl space-y-4 border-t-8 border-t-pastelYellow-300">
+                    <h2 class="heading-font text-xl font-bold text-slate-900 dark:text-white">Hubungi Guru / Teman</h2>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Punya kendala pengerjaan tugas storytelling? Kirim pesan langsung ke guru pengampu atau simpan catatan pribadi di Spreadsheet.
+                    </p>
+                    <div class="space-y-3 pt-2 text-xs">
+                        <div class="flex items-center space-x-3 p-3 bg-white/80 dark:bg-slate-800 rounded-2xl">
+                            <i class="fa-solid fa-user-tie text-purple-600 text-lg"></i>
+                            <div>
+                                <p class="font-bold text-slate-800 dark:text-white">Guru English Kelas 8</p>
+                                <p class="text-slate-500">Mr. Danang, M.Pd.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-white/80 dark:bg-slate-800 rounded-2xl">
+                            <i class="fa-solid fa-envelope text-pink-500 text-lg"></i>
+                            <div>
+                                <p class="font-bold text-slate-800 dark:text-white">Email Guru</p>
+                                <p class="text-slate-500">danang.english8@smpnusantara.sch.id</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Card -->
+                <div class="md:col-span-2 glass-card rounded-3xl p-6 shadow-xl space-y-4">
+                    <h3 class="heading-font text-lg font-bold text-slate-800 dark:text-white">Kirim Pesan atau Masukan</h3>
+                    <form onsubmit="submitContactForm(event)" class="space-y-4 text-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Pengirim</label>
+                                <input type="text" id="contactName" required placeholder="Nama kamu..." class="w-full px-4 py-3 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Kategori Pesan</label>
+                                <select id="contactCategory" class="w-full px-4 py-3 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                                    <option value="Tanya Tugas">Tanya Tugas Storytelling</option>
+                                    <option value="Konsultasi Script">Konsultasi Draft Naskah</option>
+                                    <option value="Izin">Izin / Kendala Upload</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Isi Pesan / Catatan</label>
+                            <textarea id="contactMessage" rows="4" required placeholder="Tuliskan pesanmu secara rinci di sini..." class="w-full px-4 py-3 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-400"></textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Ke Database Spreadsheet
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODALS ================= -->
+    <!-- Modal: Configure Google Apps Script API URL -->
+    <div id="modalApiConfig" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-purple-100 dark:border-slate-800 pb-3">
+                <h3 class="heading-font text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-link text-emerald-500"></i> Konek Google Spreadsheet
+                </h3>
+                <button onclick="closeModal('modalApiConfig')" class="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Masukkan **Web App URL** dari Google Apps Script kamu agar web di Vercel dapat membaca & menyimpan data langsung ke Google Sheets!
+            </p>
+            <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 text-xs mb-1">Google Apps Script Web App URL</label>
+                <input type="url" id="apiUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs">
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeModal('modalApiConfig')" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs rounded-xl">Batal</button>
+                <button type="button" onclick="saveApiUrl()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl">Simpan & Hubungkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Tambah Tugas Baru -->
+    <div id="modalAddTask" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-purple-100 dark:border-slate-800 pb-3">
+                <h3 class="heading-font text-lg font-bold text-slate-900 dark:text-white">Tambah Tugas Baru</h3>
+                <button onclick="closeModal('modalAddTask')" class="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCreateTask(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Judul Tugas</label>
+                    <input type="text" id="newTaskTitle" required placeholder="Contoh: Recording Narrative Story..." class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mata Pelajaran</label>
+                    <input type="text" id="newTaskSubject" value="English Grade 8" class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tenggat Waktu (Deadline)</label>
+                    <input type="date" id="newTaskDate" required class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Catatan / Instruksi Ringkas</label>
+                    <textarea id="newTaskNotes" rows="3" placeholder="Catat detail dari guru..." class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modalAddTask')" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs rounded-xl">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs rounded-xl">Simpan Ke Spreadsheet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Edit Profil -->
+    <div id="modalEditProfile" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-purple-100 dark:border-slate-800 pb-3">
+                <h3 class="heading-font text-lg font-bold text-slate-900 dark:text-white">Edit Profil Siswa</h3>
+                <button onclick="closeModal('modalEditProfile')" class="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleSaveProfile(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap</label>
+                    <input type="text" id="editName" required class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Kelas & Sekolah</label>
+                    <input type="text" id="editClass" required class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Bio Ringkas / Hobi</label>
+                    <textarea id="editBio" rows="2" class="w-full px-3 py-2 rounded-xl border border-purple-200 dark:border-slate-700 bg-white dark:bg-slate-800"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modalEditProfile')" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs rounded-xl">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl">Update Profil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 border-t border-purple-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p class="font-bold text-slate-700 dark:text-slate-300">StorySlay 8th Grade • Google Apps Script Powered Web App</p>
+            <p>Terhubung langsung dengan Google Sheets Database Backend</p>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // State Management & Vercel Fetch Integration
+        let APPS_SCRIPT_URL = localStorage.getItem('storyslay_api_url') || '';
+
+        let tasksData = [
+            { id: "1", subject: "English Grade 8", title: "Video Storytelling Practice: Malin Kundang", status: "Proses", deadline: "2026-10-05", notes: "Rekam video durasi 2-3 menit. Boleh pakai kostum atau gambar pendukung!" },
+            { id: "2", subject: "English Grade 8", title: "Draft Script Storytelling: Fable pilihan", status: "Selesai", deadline: "2026-09-28", notes: "Pastikan memuat Orientation, Complication, dan Resolution yang jelas." },
+            { id: "3", subject: "English Grade 8", title: "Vocabulary Quiz: Action Verbs in Legend", status: "Belum Mulai", deadline: "2026-10-10", notes: "Pelajari 20 kata kerja past tense dari PDF Modul Storytelling." }
+        ];
+
+        let currentFilter = 'all';
+
+        // Initial setup on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            startCountdown();
+            fetchInitialDataFromAppsScript();
+        });
+
+        // Modal API Helpers
+        function openApiModal() {
+            document.getElementById('apiUrlInput').value = APPS_SCRIPT_URL;
+            document.getElementById('modalApiConfig').classList.remove('hidden');
+        }
+
+        function saveApiUrl() {
+            const url = document.getElementById('apiUrlInput').value.trim();
+            APPS_SCRIPT_URL = url;
+            localStorage.setItem('storyslay_api_url', url);
+            closeModal('modalApiConfig');
+            showToast("Web App URL Apps Script tersimpan! Menghubungkan... 🔄", "info");
+            fetchInitialDataFromAppsScript();
+        }
+
+        // Fetch data from Google Apps Script Backend (supporting Vercel & local modes)
+        function fetchInitialDataFromAppsScript() {
+            if (APPS_SCRIPT_URL) {
+                fetch(`${APPS_SCRIPT_URL}?action=getTasks`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.tasks) {
+                            tasksData = data.tasks;
+                            document.getElementById('syncStatusText').textContent = "Google Sheets Live";
+                            showToast("Data terbaru berhasil disinkronisasi dari Sheets! 📊");
+                        }
+                        renderTaskList();
+                    })
+                    .catch(err => {
+                        console.warn("Fetch Apps Script error, fallback to initial state:", err);
+                        document.getElementById('syncStatusText').textContent = "Demo / Offline Mode";
+                        renderTaskList();
+                    });
+            } else if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler((serverTasks) => {
+                        if (serverTasks && serverTasks.length > 0) tasksData = serverTasks;
+                        renderTaskList();
+                    })
+                    .getTasksData();
+            } else {
+                document.getElementById('syncStatusText').textContent = "Demo Mode (Set API Key)";
+                renderTaskList();
+            }
+        }
+
+        // Update Task Status via API
+        function updateTaskStatus(id, newStatus) {
+            const task = tasksData.find(t => t.id.toString() === id.toString());
+            if (task) {
+                task.status = newStatus;
+                renderTaskList();
+
+                if (APPS_SCRIPT_URL) {
+                    fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'updateStatus', taskId: id, newStatus: newStatus })
+                    }).then(() => {
+                        showToast(`Status tugas diupdate di Google Spreadsheet! ✅`);
+                    }).catch(err => console.error(err));
+                } else {
+                    showToast(`Status tugas diubah ke "${newStatus}"! (Local Mode) ✅`);
+                }
+            }
+        }
+
+        // Create Task
+        function handleCreateTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('newTaskTitle').value;
+            const subject = document.getElementById('newTaskSubject').value;
+            const deadline = document.getElementById('newTaskDate').value;
+            const notes = document.getElementById('newTaskNotes').value;
+
+            const newTask = {
+                id: Date.now().toString(),
+                subject,
+                title,
+                status: "Belum Mulai",
+                deadline,
+                notes: notes || "Tidak ada catatan tambahan."
+            };
+
+            tasksData.unshift(newTask);
+            renderTaskList();
+            closeModal('modalAddTask');
+
+            if (APPS_SCRIPT_URL) {
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'addTask', task: newTask })
+                }).then(() => {
+                    showToast("Tugas baru tersimpan di Google Spreadsheet! 🚀");
+                });
+            } else {
+                showToast("Tugas baru berhasil ditambahkan! 🚀");
+            }
+            e.target.reset();
+        }
+
+        // Save Profile
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('editName').value;
+            const userClass = document.getElementById('editClass').value;
+            const bio = document.getElementById('editBio').value;
+
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userClass').textContent = userClass;
+            document.getElementById('userBio').textContent = `"${bio}"`;
+            document.getElementById('userAvatar').src = `https://placehold.co/150x150/FFD1DC/6B21A8?text=${encodeURIComponent(name.split(' ')[0])}+✨`;
+
+            closeModal('modalEditProfile');
+
+            if (APPS_SCRIPT_URL) {
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'saveProfile', profile: { name, userClass, bio } })
+                }).then(() => {
+                    showToast("Profil kamu tersimpan di Google Sheets! 🎉");
+                });
+            } else {
+                showToast("Profil kamu berhasil diperbarui! 🎉");
+            }
+        }
+
+        // Submit Contact
+        function submitContactForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const category = document.getElementById('contactCategory').value;
+            const message = document.getElementById('contactMessage').value;
+
+            if (APPS_SCRIPT_URL) {
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'submitContact', contact: { name, category, message } })
+                }).then(() => {
+                    showToast(`Pesan dari ${name} tercatat di Sheet Contacts! 📩`);
+                });
+            } else {
+                showToast(`Pesan dari ${name} telah terkirim ke Guru! 📩`);
+            }
+            e.target.reset();
+        }
+
+        // Live Countdown Logic
+        function startCountdown() {
+            const targetDate = new Date().getTime() + (2 * 24 * 60 * 60 * 1000) + (14 * 60 * 60 * 1000);
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance > 0) {
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                    document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+                    document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+                    document.getElementById('cd-mins').textContent = String(minutes).padStart(2, '0');
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
